@@ -1,0 +1,23 @@
+string encryptedText = "YArHOK/U0BcNXB9Amv0PpOiCgKePP3HRgL8u0cZvsy5zF/CDeypeuhgH5KNj3qLlzZHmSqPnFPtfqU38BRovUfU6U1/+MgbMAnizViRfv3vYGPjhNE5EgSmEmazHS/46RFb0Y9qZocYqgbs2knYwt/nxKFLddrzFVCLAEnf8ztBaRkC585+OqIpnpFP03ZSIbsaFilznT1MJFHC7/wM4fEaHAz7NbEzZhNwMIMo9MHAUDBQ5Z5BFiNKND2a3pza7Q30aorOJIOKtGGO3OEp+40YFrcFMVkgIQJ2EkP8ZlSOhSUa0wceQJ7+0IFqe624HClNGaGGaAApVmVzgrBFHOGNzzZs2NWgKM5N6GhJdyFiWJ7L+A6qsxgqJKFfTI41fIqr2XfjE1T/TcGFKrmWr2TpHSRsTKJkvHDpaonJVLHFllIaoNi6tUU2xxHlLbKWbC9FATcMZJllme55l0l4H0zCD6SYSELJRpoHAyPhcCXNWsJGr1y4xZ154NIeqdeBxCi748GKjT7wN8AcMiI2vb+NhCHPHKPfuEXWz+S/kCf08XesFguX0UKoSg8nzV6dV1kKn22vi8wqWW6y9tWhSH+vbk+Mt1dvRlLpieP8gcP0K+jR0Sbty8x6yWxCALgA1J45WmzpmavxQlnK25SyCNW6RmgQBvV9GYSlK1mbR5BE=";
+            //string encryptedText = plainText;
+
+            RijndaelManaged aes = new RijndaelManaged();
+            aes.BlockSize = 128;
+            aes.KeySize = 256;
+
+            /// In Java, Same with below code
+            /// Cipher _Cipher = Cipher.getInstance("AES");  // Java Code
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
+            byte[] keyArr = Encoding.ASCII.GetBytes("IN00002012345678"); 
+            byte[] KeyArrBytes32Value = new byte[16];
+            //   Array.Copy(keyArr, KeyArrBytes32Value, 16);
+
+            aes.Key = keyArr;
+
+            ICryptoTransform decrypto = aes.CreateDecryptor();
+
+            byte[] encryptedBytes = Convert.FromBase64CharArray(encryptedText.ToCharArray(), 0, encryptedText.Length);
+            byte[] decryptedData = decrypto.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
+           // return ASCIIEncoding.UTF8.GetString(decryptedData);
+            return Convert.ToBase64String(decryptedData);
